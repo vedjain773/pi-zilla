@@ -43,12 +43,12 @@ const error_msgs = [16][] const u8 {
     "ERROR_INVALID_EL0_32"
 };
 
-pub extern fn vector_init() void;
-pub extern fn enable() void;
-pub extern fn disable() void;
+pub extern fn vector_init() callconv(.c) void;
+pub extern fn enable() callconv(.c) void;
+pub extern fn disable() callconv(.c) void;
 
-pub extern fn save_and_disable() usize;
-pub extern fn restore(prev_state: usize) void;
+pub extern fn save_and_disable() callconv(.c) usize;
+pub extern fn restore(prev_state: usize) callconv(.c) void;
 
 pub export fn show_invalid_entry_message(ty: u32, esr: usize, addr: usize) void {
     console.print("[Invalid entry message] %s, ESR: %x, address: %x\r\n", 

@@ -35,7 +35,7 @@ fn task2() noreturn {
         console.print("Counter T2: %d\n", .{shared_counter});
         sl.unlock(prev_state);
 
-        scheduler.sleep(5); 
+        scheduler.sleep(10); 
     }
 }
 

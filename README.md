@@ -6,7 +6,7 @@ A bare metal OS kernel for the Raspberry Pi 3B, written in Zig.
 
 ## Requirements
 
-- [Zig](https://ziglang.org/) 0.16 or later
+- [Zig](https://ziglang.org/) 0.16+
 - [QEMU](https://www.qemu.org/) with `qemu-system-aarch64` for emulation
 
 ## Usage
@@ -35,14 +35,10 @@ The kernel uses samples as entry points, each one showcasing a specific set of f
 
 | Sample | Description |
 |--------|-------------|
+| `context_switch` | Runs a simple context switch demonstration |
 | `pong_clock` | Runs a playable Pong game and a live tick counter as two concurrent preemptive tasks |
 | `spinlock` | Two tasks increment a shared counter using a spinlock to demonstrate mutual exclusion |
 | `wait_queue` | Two tasks block on a wait queue and are woken up by a third task after a set number of ticks, demonstrating inter-task synchronization |
-
-
-## About
-
-Inspired by [NovaPI](https://github.com/moxybaba/NovaPi), a project some friends built at my club. I wanted to try OS development and picked Zig over C or Rust — it felt purpose-built for embedded/systems work, without Rust's borrow-checker friction. I'm still new to the language, so the code leans more C/C++ in style than idiomatic Zig.
 
 ## Acknowledgements
 

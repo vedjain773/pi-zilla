@@ -50,7 +50,7 @@ pub fn preemptEnable() void {
     current.*.preempt_count -= 1;
 }
 
-pub extern fn cpu_switch_to(prev: *Task, next: *Task) void;
+pub extern fn cpu_switch_to(prev: *Task, next: *Task) callconv(.c) void;
 
 fn schedCallBack() void {
     preemptDisable();

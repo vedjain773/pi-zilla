@@ -110,22 +110,7 @@ pub fn build(b: *std.Build) void {
     objcopy.step.dependOn(&kernel.step);
 
     var img_step = b.step("img", "Create kernel8.img");
-    img_step.dependOn(&objcopy.step);
-
-    // QEMU
-    const qemu = b.addSystemCommand(&.{
-        "qemu-system-aarch64",
-        "-M", "raspi3b",
-        "-serial", "stdio",
-        "-display", "none",
-    });
-
-    qemu.addArg("-kernel");
-    qemu.addFileArg(img);
-    qemu.step.dependOn(img_step);
-
-    const qemu_step = b.step("qemu", "Run kernel in QEMU");
-    qemu_step.dependOn(&qemu.step);
+    img_step.dependOn(&objcopy.step); 
 
     // QEMU without the first serial device
     const qemu_nd = b.addSystemCommand(&.{

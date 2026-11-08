@@ -6,7 +6,7 @@ pub const State = enum {
     TASK_ZOMBIE,
 };
 
-const CPUContext =  struct {
+const CPUContext = extern struct {
     x19: usize,
     x20: usize,
     x21: usize,
