@@ -22,7 +22,7 @@ fn task1(arr: usize) callconv(.c) noreturn {
 fn task2(arr: usize) callconv(.c) noreturn {
     while (true) {
         const str: *const[5:0]u8 = @ptrFromInt(arr);
-        console.print("Running %s\n", .{str});
+        console.print("Running: %s\n", .{str});
         scheduler.sleep(5); 
     }
 }

@@ -104,7 +104,9 @@ pub fn timerTick() void {
         }
     }
 
-    current.*.counter -= 1;
+    if (current.*.counter > 0) {
+        current.*.counter -= 1;
+    }
 
     if (current.*.counter > 0 or current.*.preempt_count > 0)
         return;

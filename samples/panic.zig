@@ -6,7 +6,7 @@ pub const PanicHandler = struct {
     pub fn call(msg: []const u8, ret_addr: ?usize) noreturn {
         _ = ret_addr;
 
-        console.setUart(console.UartType.full_uart);
+        console.setUart(console.UartType.mini_uart);
         console.print("Panic!: ", .{});
         
         for (msg) |c| {

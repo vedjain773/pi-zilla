@@ -1,11 +1,33 @@
+ENTRY(_start)
+
 SECTIONS
 {
-	.text.boot : { *(.text.boot) }
-	.text : { *(.text) }
-	.rodata : { *(.rodata) }
-	.data : { *(.data) *(.data.*) }
-    . = ALIGN(0x8);
-	bss_begin = .;
-	.bss : { *(.bss*) }
-	bss_end = .;
+	. = 0x80000;
+
+	.text : {
+		KEEP(*(.text.boot))
+		*(.text .text.*)
+	}
+
+	.rodata : {
+		*(.rodata .rodata.*)
+	}
+
+	.data : {
+		*(.data .data.*)
+	}
+
+	. = ALIGN(16);
+	.bss (NOLOAD) : {
+		bss_begin = .;
+		*(.bss .bss.*)
+		*(COMMON)
+		. = ALIGN(16);
+		bss_end = .;
+	}
+
+	/DISCARD/ : {
+		*(.comment)
+		*(.eh_frame*)
+	}
 }
