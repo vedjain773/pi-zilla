@@ -1,4 +1,4 @@
-const SpinLock = @import("atomic.zig").SpinLock;
+const SpinLock = @import("sync").SpinLock;
 const WaitQueue = @import("wq.zig").WaitQueue;
 
 const taskf = @import("task.zig");
@@ -7,17 +7,15 @@ const State = taskf.State;
 
 const scheduler = @import("scheduler.zig");
 
-//locked = 0 -> unlocked
-//locked = 1 -> locked
 pub const Mutex =  struct {
-    locked: usize,
+    locked: bool,
     owner: ?*Task,
     guard: SpinLock,
     wait_queue: WaitQueue,
 
     pub fn init() Mutex {
         return .{
-            .locked = 0,
+            .locked = false,
             .owner = null,
             .guard = .{
                 .locked = 0,
@@ -34,8 +32,8 @@ pub const Mutex =  struct {
         while (true) {
             const prev_state = self.guard.lock();
 
-            if (self.locked == 0) {
-                self.locked = 1;
+            if (!self.locked) {
+                self.locked = true;
                 self.owner = scheduler.current; 
                 self.guard.unlock(prev_state);
                 break;
@@ -64,7 +62,7 @@ pub const Mutex =  struct {
             popped.?.*.state = State.TASK_RUNNING; 
         }
 
-        self.locked = 0;
+        self.locked = false;
         self.owner = null;
         self.guard.unlock(prev_state);
     }

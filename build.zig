@@ -34,6 +34,11 @@ pub fn build(b: *std.Build) void {
         .target = target
     });
 
+    const sync_mod = b.addModule("sync", .{
+        .root_source_file = b.path("sync/root.zig"),
+        .target = target
+    });
+
     const sched_mod = b.addModule("sched", .{
         .root_source_file = b.path("sched/root.zig"),
         .target = target
@@ -49,9 +54,12 @@ pub fn build(b: *std.Build) void {
         
     drivers_mod.addImport("lib", lib_mod);
 
+    sync_mod.addImport("irq", irq_mod);
+
     sched_mod.addImport("boot", boot_mod);
     sched_mod.addImport("irq", irq_mod);
     sched_mod.addImport("mm", mm_mod);
+    sched_mod.addImport("sync", sync_mod);
 
     const sample = b.option(
         []const u8,
@@ -73,6 +81,7 @@ pub fn build(b: *std.Build) void {
                 .{ .name = "drivers", .module = drivers_mod },
                 .{ .name = "sched", .module = sched_mod },
                 .{ .name = "lib", .module = lib_mod },
+                .{ .name = "sync", .module = sync_mod },
             },
         }),
     }); 

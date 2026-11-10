@@ -7,12 +7,12 @@ const utils = @import("lib").utils;
 
 const fork = @import("sched").fork;
 const scheduler = @import("sched").scheduler;
-const atomic = @import("sched").atomic;
+const SpinLock = @import("sync").SpinLock;
 
 const panic_handler = @import("panic.zig");
 pub const panic = panic_handler.PanicHandler;
 
-var sl = atomic.SpinLock.init();
+var sl = SpinLock.init();
 var shared_counter: usize = 0;
 
 fn task1() noreturn {
