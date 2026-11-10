@@ -104,6 +104,7 @@ pub fn build(b: *std.Build) void {
         "-serial", "null",
         "-serial", "stdio",
         "-display", "none",
+        "-S", "-s"
     });
 
     qemu_dbg.addArg("-kernel");
