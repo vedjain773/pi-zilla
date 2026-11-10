@@ -33,3 +33,16 @@ pub fn clamp(x: i32, x_min: u32, x_max: u32) u32 {
     if (x >= @as(i32, @intCast(x_max))) return x_max;
     return @intCast(x);
 }
+
+pub fn rand(seed: u32) u32 {
+    var state = seed;
+    state ^= state << 13;
+    state ^= state >> 17;
+    state ^= state << 5;
+
+    return state;
+}
+
+pub fn randRange(seed: u32, min: u32, max: u32) u32 {
+    return min + rand(seed) % (max - min);
+}

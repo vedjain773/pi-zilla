@@ -20,6 +20,10 @@ pub const TIMER_CS_M3: u32 = (1 << 3);
 const interval: u32 = 200000;
 var curr_val: u32 = 0;
 
+pub fn getTimerVal() u32 {
+    return utils.read32(TIMER_CLO);
+}
+
 pub fn timerInit() void {
     //Read current free-timer value
     curr_val = utils.read32(TIMER_CLO);

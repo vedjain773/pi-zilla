@@ -52,7 +52,7 @@ pub const Mutex =  struct {
     pub fn release(self: *Mutex) void {
         const prev_state = self.guard.lock();
 
-        if (self.owner.? != scheduler.current) {
+        if (self.owner != scheduler.current) {
             self.guard.unlock(prev_state);
             return;
         }
@@ -67,3 +67,16 @@ pub const Mutex =  struct {
         self.guard.unlock(prev_state);
     }
 };
+
+pub fn init_mutex(mutex: *Mutex) void {
+    mutex.*.locked = false;
+    mutex.*.owner = null;
+    mutex.*.guard = .{
+        .locked = 0,
+    };
+    mutex.*.wait_queue = .{
+        .head = null,
+        .tail = null,
+        .size = 0
+    };
+}
