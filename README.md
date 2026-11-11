@@ -37,8 +37,10 @@ The kernel uses samples as entry points, each one showcasing a specific set of f
 |--------|-------------|
 | `context_switch` | Runs a simple context switch demonstration |
 | `pong_clock` | Runs a playable Pong game and a live tick counter as two concurrent preemptive tasks |
-| `spinlock` | Two tasks increment a shared counter using a spinlock to demonstrate mutual exclusion |
-| `wait_queue` | Two tasks block on a wait queue and are woken up by a third task after a set number of ticks, demonstrating inter-task synchronization |
+| `spinlock` | Two tasks increment a shared counter using a spinlock |
+| `wait_queue` | Two tasks block on a wait queue and are woken up by a third task after a set number of ticks |
+| `smutex` | Two tasks increment a shared counter using a mutex |
+| `dining` | Implementation of the dining philosophers problem using synchronization primitives |
 
 ## Acknowledgements
 

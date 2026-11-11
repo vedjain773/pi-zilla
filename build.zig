@@ -7,6 +7,7 @@ pub fn build(b: *std.Build) void {
         .cpu_arch = .aarch64,
         .os_tag = .freestanding,
         .abi = .none,
+        .cpu_features_sub = std.Target.aarch64.featureSet(&.{ .neon, .fp_armv8 }),
     });
     
     const lib_mod = b.addModule("lib", .{

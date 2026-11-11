@@ -23,16 +23,9 @@ const PhilState = enum {
 const N: usize = 5;
 var forks: [N]mutexf.Mutex = undefined;
 var philosopher_states: [N]PhilState = @splat(PhilState.HUNGRY);
+var meals_eaten: [N]u32 = @splat(0);
 
 var sl = SpinLock.init();
-
-fn print_state(state: PhilState) void {
-    switch (state) {
-        PhilState.HUNGRY => console.print("State: %s\n", .{"HUNGRY"}),
-        PhilState.EATING => console.print("State: %s\n", .{"EATING"}),
-        PhilState.THINKING => console.print("State: %s\n", .{"THINKING"}),
-    }
-}
 
 fn philosopher(id: usize) callconv(.c) noreturn {
     const a = id - 1;
@@ -49,7 +42,8 @@ fn philosopher(id: usize) callconv(.c) noreturn {
         forks[first].acquire();
         forks[second].acquire();
 
-        philosopher_states[a] = PhilState.EATING; 
+        philosopher_states[a] = PhilState.EATING;
+        meals_eaten[a] += 1;
         scheduler.sleep(5);
 
         forks[second].release();
@@ -67,8 +61,8 @@ fn print_stats() callconv(.c) noreturn {
         sl.unlock(prev_state);
 
         for (0..N) |i| {
-            console.print("PHILOSOPHER %d: ", .{i});
-            print_state(snapshot[i]);
+            console.print("PHILOSOPHER %d: MEALS: %d STATE: %s\n",
+                .{i, meals_eaten[i], @tagName(snapshot[i])});
         }
 
         console.print("\n", .{});
