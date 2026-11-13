@@ -56,11 +56,11 @@ pub fn build(b: *std.Build) void {
     drivers_mod.addImport("lib", lib_mod);
 
     sync_mod.addImport("irq", irq_mod);
+    sync_mod.addImport("sched", sched_mod);
 
     sched_mod.addImport("boot", boot_mod);
     sched_mod.addImport("irq", irq_mod);
     sched_mod.addImport("mm", mm_mod);
-    sched_mod.addImport("sync", sync_mod);
 
     const sample = b.option(
         []const u8,

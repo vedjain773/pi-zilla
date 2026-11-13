@@ -3,8 +3,6 @@ const irq = @import("irq").irq;
 
 const console = @import("drivers").console;
 
-const utils = @import("lib").utils;
-
 const fork = @import("sched").fork;
 const scheduler = @import("sched").scheduler;
 const SpinLock = @import("sync").SpinLock;
@@ -40,11 +38,7 @@ fn task2() noreturn {
 }
 
 export fn kernel_main() noreturn {
-    const num: u32 = utils.getEl();
-
     console.setUart(console.UartType.mini_uart);
-    console.print("Exception-level: %d\n", .{num});
-
     irq.vector_init();
     timer.timerInit();
 

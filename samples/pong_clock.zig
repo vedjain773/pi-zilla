@@ -15,11 +15,7 @@ const panic_handler = @import("panic.zig");
 pub const panic = panic_handler.PanicHandler;
 
 export fn kernel_main() noreturn {
-    const num: u32 = utils.getEl();
-
     console.setUart(console.UartType.mini_uart);
-    console.print("Exception-level: %d\n", .{num});
-
     irq.vector_init();
     timer.timerInit();
 

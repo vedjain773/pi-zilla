@@ -8,17 +8,15 @@ const utils = @import("lib").utils;
 const fork = @import("sched").fork;
 const scheduler = @import("sched").scheduler;
 const task = @import("sched").task;
-const wq = @import("sched").wq;
+const WaitQueue = @import("sched").WaitQueue;
 
 const panic_handler = @import("panic.zig");
 pub const panic = panic_handler.PanicHandler;
 
 const Task = task.Task;
 const State = task.State;
-const WaitQueue = wq.WaitQueue;
 
 var counter: usize = 0;
-
 var wait: WaitQueue = .{
     .head = null,
     .tail = null,
@@ -61,11 +59,7 @@ fn task3() noreturn {
 }
 
 export fn kernel_main() noreturn {
-    const num: u32 = utils.getEl();
-
     console.setUart(console.UartType.mini_uart);
-    console.print("Exception-level: %d\n", .{num});
-
     irq.vector_init();
     timer.timerInit();
 

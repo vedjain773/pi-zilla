@@ -7,12 +7,13 @@ const utils = @import("lib").utils;
 
 const fork = @import("sched").fork;
 const scheduler = @import("sched").scheduler;
-const mutexf = @import("sched").mutex;
+
+const Mutex = @import("sync").Mutex;
 
 const panic_handler = @import("panic.zig");
 pub const panic = panic_handler.PanicHandler;
 
-var os_mutex = mutexf.Mutex.init();
+var os_mutex = Mutex.init();
 var shared_counter: usize = 0;
 
 fn task1() noreturn {
@@ -39,11 +40,7 @@ fn task2() noreturn {
 }
 
 export fn kernel_main() noreturn {
-    const num: u32 = utils.getEl();
-
     console.setUart(console.UartType.mini_uart);
-    console.print("Exception-level: %d\n", .{num});
-
     irq.vector_init();
     timer.timerInit();
 

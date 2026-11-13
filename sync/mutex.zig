@@ -1,11 +1,9 @@
-const SpinLock = @import("sync").SpinLock;
-const WaitQueue = @import("wq.zig").WaitQueue;
+const scheduler = @import("sched").scheduler;
+const WaitQueue = @import("sched").WaitQueue;
+const Task = @import("sched").task.Task;
+const State = @import("sched").task.State;
 
-const taskf = @import("task.zig");
-const Task = taskf.Task;
-const State = taskf.State;
-
-const scheduler = @import("scheduler.zig");
+const SpinLock = @import("spin.zig").SpinLock;
 
 pub const Mutex =  struct {
     locked: bool,
@@ -67,16 +65,3 @@ pub const Mutex =  struct {
         self.guard.unlock(prev_state);
     }
 };
-
-pub fn init_mutex(mutex: *Mutex) void {
-    mutex.*.locked = false;
-    mutex.*.owner = null;
-    mutex.*.guard = .{
-        .locked = 0,
-    };
-    mutex.*.wait_queue = .{
-        .head = null,
-        .tail = null,
-        .size = 0
-    };
-}

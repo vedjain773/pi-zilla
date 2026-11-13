@@ -7,8 +7,8 @@ const utils = @import("lib").utils;
 
 const fork = @import("sched").fork;
 const scheduler = @import("sched").scheduler;
-const mutexf = @import("sched").mutex;
 
+const Mutex = @import("sync").Mutex;
 const SpinLock = @import("sync").SpinLock;
 
 const panic_handler = @import("panic.zig");
@@ -21,7 +21,7 @@ const PhilState = enum {
 };
 
 const N: usize = 5;
-var forks: [N]mutexf.Mutex = undefined;
+var forks: [N]Mutex = undefined;
 var philosopher_states: [N]PhilState = @splat(PhilState.HUNGRY);
 var meals_eaten: [N]u32 = @splat(0);
 
@@ -71,15 +71,11 @@ fn print_stats() callconv(.c) noreturn {
 }
 
 export fn kernel_main() noreturn {
-    const num: u32 = utils.getEl();
-
-    console.setUart(console.UartType.mini_uart);
-    console.print("Exception-level: %d\n", .{num});
-    
     for (0..N) |i| {
-        mutexf.init_mutex(&forks[i]);
+        forks[i] = Mutex.init();
     }
 
+    console.setUart(console.UartType.mini_uart);
     irq.vector_init();
     timer.timerInit();
 
